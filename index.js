@@ -33,7 +33,7 @@ app.use("/api/home", homeRoute)
 
 io = new Server(server, {
     cors: {
-        origin: 'https://cash2me.vercel.app/',
+        origin: 'https://cash2me.vercel.app',
     },
 })
 io.on('connection', (socket) => {
