@@ -1,5 +1,7 @@
 const express = require('express')
 const app = express()
+const helmet = require('helmet')
+const compression = require('compression')
 const http = require('http')
 const { Server } = require('socket.io')
 const db = require('./dbConnector')
@@ -15,6 +17,9 @@ app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 app.use(morgan("dev"))
 
+let port=process.env.PORT||3000
+app.use(helmet())
+app.use(compression())
 const server = http.createServer(app)
 app.get('profile_page', (req, res) => {
     res.send(profile_page)
@@ -62,13 +67,13 @@ io.on('connection', (socket) => {
         }
         socket.join(chatroom.name)
         roomName = chatroom.name
-        io.in(roomName).emit("allMessages",chatroom.messages )
-        socket.to(roomName).emit('User-joined', { id: ids.length,user:"admin", load: "other user is here" });
-        
+        io.in(roomName).emit("allMessages", chatroom.messages)
+        socket.to(roomName).emit('User-joined', { id: ids.length, user: "admin", load: "other user is here" });
+
         socket.on('send-message', async (msg) => {
             console.log(msg)
-            msg['id']=ids.length
-            io.in(roomName).emit("receive-message",msg )
+            msg['id'] = ids.length
+            io.in(roomName).emit("receive-message", msg)
             chatroom.messages.push(msg)
             //socket.emit('recieve-message', { id: ids.length, load: msg })
             ids.push(1)
@@ -95,6 +100,6 @@ app.use((err, req, res, next) => {
 
 })
 
-server.listen(3000, () => {
-    console.log("Server is running on port 3000")
+server.listen(port, () => {
+    console.log(`Server is running on port ${port}`)
 })
