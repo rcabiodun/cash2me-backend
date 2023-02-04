@@ -45,8 +45,8 @@ let profile=mongoose.model('profile',profileSchema)
 
 const profileValidator=Joi.object({
     user_type:Joi.string().min(5).required(),
-    hostel:Joi.string().min(5).required(),
-    school:Joi.string().min(5).required(),
+    hostel:Joi.string().min(2).required(),
+    school:Joi.string().min(3).required(),
     rate:Joi.number().max(350),
     phone_number:Joi.string().max(11).required(),
 })

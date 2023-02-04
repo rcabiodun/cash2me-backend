@@ -17,7 +17,8 @@ let userSchema=new mongoose.Schema({
     }
 })
 userSchema.methods.genToken=function(){
-    const token=jwt.sign({id:this._id,username:this.username},"cash2me")
+    
+    const token=jwt.sign({id:this._id,username:this.username,},"cash2me")
     return token;
 }
 let User=mongoose.model('User',userSchema)
