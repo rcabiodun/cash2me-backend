@@ -1,7 +1,7 @@
 const mongoose  = require("mongoose");
 
 function dbConnector() {
-    mongoose.connect("mongodb://127.0.0.1/Cash2me").then(()=>{
+    mongoose.connect("mongodb+srv://rcabiodun:UuHbvdKNDOqjdnUo@cluster0.jgfw3db.mongodb.net/?retryWrites=true&w=majority").then(()=>{
         console.log("Connected to the db")
     }).catch((err)=>{
         console.log(`Error occured boss ${err}`)

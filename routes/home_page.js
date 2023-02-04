@@ -8,7 +8,7 @@ const { Chatroom } = require('../models/Chatrroom')
 homeRoute.get('/home_page', [decodeMiddleware], asyncMiddleware(async (req, res, next) => {
     let currentUserprofile = await Profile.findOne({ user: req.user_id })
     console.log(currentUserprofile)
-    let cashAgents = await Profile.find({ school: currentUserprofile.school, user_type: "Cash Agent" ,is_available:true}).skip((req.query.page - 1) * 1).limit(5).populate("user")
+    let cashAgents = await Profile.find({ school: currentUserprofile.school, user_type: "Cash Agent" ,is_available:true}).skip((req.query.page - 1) * 1).limit(200).populate("user")
     return res.json(cashAgents)
 }))
 
