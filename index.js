@@ -34,6 +34,7 @@ app.use("/api/home", homeRoute)
 io = new Server(server, {
     cors: {
         origin: 'https://cash2me.vercel.app',
+        allowedHeaders: ["*","https://cash2me.vercel.app","https://cash2me.vercel.app/"]
     },
 })
 io.on('connection', (socket) => {
