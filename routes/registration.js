@@ -15,10 +15,27 @@ accRoute.post('/registration', asyncMiddleware(async (req, res, next) => {
     if (checkingUser) {
         return res.json({ "message": "user already exists" })
     }
+
+    let badWords = ["yansh", "dick", "cum", "ass", "fuck", "asf", "mf", "asshole", "pussy","penis","boobs","vagina"]
+
+    let checkingBadwords = badWords.filter((v, i) => {
+        let username=req.body.username.toLowerCase()
+        if (username.includes(v)) {
+            return v
+        }
+    })
+    if (checkingBadwords.length > 0) {
+        return res.json({ "message": "kindly input a proper name" })
+
+    }
+
+
+
     let user = new User(req.body)
     const salt = await bcrypt.genSalt(10)
     let hash = await bcrypt.hash(user.password, salt)
     user.password = hash
+    user.username = user.username.trim()
     await user.save()
     let token = user.genToken()
     return res.json({ "auth_token": token })
@@ -46,13 +63,13 @@ accRoute.post('/login', asyncMiddleware(async (req, res, next) => {
 
 accRoute.post('/profile', [decodeMiddleware], asyncMiddleware(async (req, res, next) => {
     console.log(req.body.rate)
-    if (req.body.rate.length>0){
+    if (req.body.rate.length > 0) {
         let Intrate = parseInt(req.body.rate)
         req.body.rate = Intrate
-    }else{
-        req.body.rate =0
+    } else {
+        req.body.rate = 0
     }
-    
+
     let { error } = profileValidator.validate(req.body)
     if (error) {
         next(error.details[0].message)
