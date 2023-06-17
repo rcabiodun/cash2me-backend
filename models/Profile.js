@@ -10,6 +10,7 @@ let profileSchema=new mongoose.Schema({
     },
     user_type:{
         type: String,
+        enum:["retailer","wholesaler","dispatch",],
         minLength:4,
         required: true
     },
